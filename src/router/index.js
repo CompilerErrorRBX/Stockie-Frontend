@@ -27,6 +27,7 @@ export default new Router({
       beforeEnter: (to, origin, next) => {
         store.commit('setTheme', { primary_color: 'teal' });
         store.commit('setPageName', 'Dashboard');
+        store.commit('setArticles', []);
         next();
       },
     },

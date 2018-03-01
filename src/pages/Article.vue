@@ -1,5 +1,5 @@
 <template>
-  <v-layout row pb-2>
+  <v-layout row pb-2 v-if="article">
     <v-flex xs12 md10 offset-md1>
       <v-card>
         <v-card-media :src="article.thumbnail" height="600px" v-if="article.thumbnail">

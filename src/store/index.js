@@ -38,10 +38,14 @@ const Store = new Vuex.Store({
         });
     },
     fetchArticles: (state, props) => {
-      axios.get(`http://localhost:3000/articles?limit=${props.limit}&offset=${props.offset}`)
+      const request = axios.get(`http://localhost:3000/articles?limit=${props.limit}&offset=${props.offset}`)
         .then((response) => {
-          state.commit('setArticles', response.data);
+          const articles = props.appendArticles ?
+            state.state.articles.concat(response.data) : response.data;
+          state.commit('setArticles', articles);
         });
+
+      return request;
     },
   },
 });
