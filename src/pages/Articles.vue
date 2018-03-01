@@ -1,7 +1,7 @@
 <template>
   <div v-scroll="onScroll">
     <v-container style="height: unset; min-height: 100vh">
-      <div class="masonry">
+      <div class="grid">
         <v-flex
           class="article-card"
           xs12
@@ -32,12 +32,16 @@ export default {
       limit: 35,
     };
   },
-  computed: mapState([
-    'articles',
-  ]),
   mounted() {
-    this.$store.dispatch('fetchArticles', { limit: this.limit, offset: this.offset });
+    this.$store.dispatch('fetchArticles', { limit: this.limit, offset: this.offset })
+      .then(() => {
+        this.resizeAllGridItems(); 
+      });
     this.offset += this.limit;
+
+    window.addEventListener('resize', () => { this.resizeAllGridItems(); });
+
+    this.resizeAllGridItems();
   },
   methods: {
     onScroll() {
@@ -51,47 +55,49 @@ export default {
             this.$store.commit('setTheme', { primary_color: 'teal' });
             this.loading = false;
             this.offset += this.limit;
+            this.resizeAllGridItems();
           });
       }
     },
+    resizeGridItem(item) {
+      const grid = document.getElementsByClassName('grid')[0];
+      const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'), 10);
+      const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'), 10);
+      const rowSpan = Math.ceil((item.querySelector('.card').getBoundingClientRect().height + rowGap) / (rowHeight + rowGap));
+
+      item.style.gridRowEnd = `span ${rowSpan}`;
+    },
+    resizeAllGridItems() {
+      const allItems = document.getElementsByClassName('article-card');
+      for (let x = 0; x < allItems.length; x++) {
+        this.resizeGridItem(allItems[x]);
+      }
+    },
   },
+  // watch: {
+  //   articles: {
+  //     handler() {
+  //       this.resizeAllGridItems();
+  //     },
+  //     deep: true,
+  //   },
+  // },
+  computed: mapState([
+    'articles',
+  ]),
 };
 </script>
 
 <style scoped>
-  .masonry {
-    column-count: 4;
-    column-gap: 8px;
-    transform: translateX(0);
+  .grid {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(320px,1fr));
+    grid-auto-rows: 20px;
   }
 
   .article-card {
     display: inline-block;
-    margin: 0 0 8px;
     width: 100%;
-  }
-
-  @media only screen and (min-width: 400px) {
-    .masonry {
-      column-count: 1;
-    }
-  }
-
-  @media only screen and (min-width: 700px) {
-    .masonry {
-      column-count: 2;
-    }
-  }
-
-  @media only screen and (min-width: 900px) {
-    .masonry {
-      column-count: 3;
-    }
-  }
-
-  @media only screen and (min-width: 1480px) {
-    .masonry {
-      column-count: 4;
-    }
   }
 </style>
