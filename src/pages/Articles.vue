@@ -1,6 +1,6 @@
 <template>
   <div v-scroll="onScroll">
-    <v-container style="height: unset">
+    <v-container style="height: unset; min-height: 100vh">
       <div class="masonry">
         <v-flex
           class="article-card"
@@ -12,7 +12,7 @@
         </v-flex>
       </div>
     </v-container>
-    <div class="text-xs-center" v-if="loading">
+    <div class="text-xs-center" v-if="loading || !articles">
       <v-progress-circular indeterminate :size="50" color="primary"></v-progress-circular>
     </div>
   </div>

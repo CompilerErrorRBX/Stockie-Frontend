@@ -8,6 +8,7 @@ const Store = new Vuex.Store({
   state: {
     article: null,
     articles: [],
+    darkTheme: false,
     page_name: 'Home',
     theme: {
       primary_color: 'blue',
@@ -22,6 +23,9 @@ const Store = new Vuex.Store({
     },
     setPageName(state, name) {
       state.page_name = name;
+    },
+    setDarktheme(state, isDark) {
+      state.darkTheme = isDark;
     },
     setArticle(state, article) {
       state.article = article;

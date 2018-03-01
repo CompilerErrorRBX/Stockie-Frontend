@@ -1,27 +1,38 @@
 <template>
   <v-app
-    class="grey lighten-4"
   >
     <v-navigation-drawer
       app
-      class="grey lighten-4"
-      clipped
+      :clipped="$vuetify.breakpoint.mdAndUp"
       fixed
       v-model="drawer"
     >
       <v-list>
         <v-list-tile
-          v-for="item in items"
-          :key="item.title"
-          :to="item.route"
-          :class="theme.secondary_text_color"
-          :active-class="theme.primary_text_color"
+          v-for="page in pages"
+          :key="page.title"
+          :to="page.route"
+          active-class="default-class"
         >
           <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon>{{ page.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+            <v-list-tile-title>{{ page.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider />
+        <v-list-tile
+          v-for="option in options"
+          :key="option.title"
+          :to="option.route"
+          active-class="default-class"
+        >
+          <v-list-tile-action>
+            <v-icon>{{ option.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ option.title }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -48,12 +59,9 @@
       <v-btn icon>
         <v-icon>person</v-icon>
       </v-btn>
-      <v-btn icon href="#/Dashboard">
-        <v-icon>dashboard</v-icon>
-      </v-btn>
     </v-toolbar>
     <v-content>
-      <v-container fluid>
+      <v-container fluid style="height: unset; min-height: 100vh">
         <transition name="fade">
           <router-view></router-view>
         </transition>
@@ -73,9 +81,14 @@ export default {
   ]),
   data: () => ({
     drawer: null,
-    items: [
+    pages: [
       { icon: 'home', title: 'Home', route: '/' },
-      { icon: 'dashboard', title: 'Dashboard', route: '/Dashboard' },
+      { icon: 'dashboard', title: 'Articles', route: '/Articles' },
+    ],
+    options: [
+      { icon: 'settings', title: 'Settings', route: '/Settings' },
+      { icon: 'feedback', title: 'Send Feedback', route: '/Feedback' },
+      { icon: 'help', title: 'Help', route: '/help' },
     ],
   }),
   props: {
@@ -87,7 +100,6 @@ export default {
   html, body {
     margin: 0;
     height: 100vh;
-    background-color: #f5f5f5;
   }
 
   #app {

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/pages/Home';
-import Dashboard from '@/pages/Dashboard';
+import Dashboard from '@/pages/Articles';
 import Article from '@/pages/Article';
 
 import store from '../store';
@@ -21,12 +21,12 @@ export default new Router({
       },
     },
     {
-      path: '/Dashboard',
-      name: 'Dashboard',
+      path: '/Articles',
+      name: 'Articles',
       component: Dashboard,
       beforeEnter: (to, origin, next) => {
         store.commit('setTheme', { primary_color: 'teal' });
-        store.commit('setPageName', 'Dashboard');
+        store.commit('setPageName', 'Articles');
         store.commit('setArticles', []);
         next();
       },

@@ -1,5 +1,5 @@
 <template>
-  <v-card hover>
+  <v-card hover transition="slide-y-transition">
     <v-card-media :src="article.thumbnail" height="200px" v-if="article.thumbnail" />
     <v-card-title primary-title>
       <div>
