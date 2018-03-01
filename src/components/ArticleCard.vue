@@ -4,7 +4,8 @@
     <v-card-title primary-title>
       <div>
         <div class="headline">{{ article.title }}</div>
-        <span class="grey--text"> {{ article.author }} </span>
+        <div >{{ article.author }}</div>
+        <div class="grey--text">{{ article.date_published | moment }}</div>
       </div>
     </v-card-title>
     <v-card-text>
@@ -23,8 +24,13 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   name: 'ArticleCard',
+  filters: {
+    moment: date => (moment(date).fromNow()),
+  },
   props: {
     article: Object,
   },
