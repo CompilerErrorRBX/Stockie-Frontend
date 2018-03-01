@@ -1,6 +1,5 @@
 <template>
-  <v-app
-  >
+  <v-app dark>
     <v-navigation-drawer
       app
       :clipped="$vuetify.breakpoint.mdAndUp"

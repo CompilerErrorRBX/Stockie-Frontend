@@ -22,8 +22,11 @@
             <div class="headline">{{ article.title }}</div>
             <div class="grey--text">{{ article.date_published | moment }}</div>
             <v-chip>
-              <v-avatar>
-                <img :src="article.author_image" :alt="article.author">
+              <v-avatar class="primary">
+                <img :src="article.author_image" v-if="article.author_image">
+                <span class="white--text headline" v-if="!article.author_image">
+                  {{ article.author[0] }}
+                </span>
               </v-avatar>
               {{ article.author }}
             </v-chip>
@@ -68,7 +71,9 @@ export default {
     color: unset;
   }
 
-  #related-articles, .external-content-inset {
+  #related-articles,
+  .external-content-inset,
+  .related_topics {
     display: none;
   }
 
@@ -88,5 +93,9 @@ export default {
 
   .article-image, table {
     width: 100%;
+  }
+
+  .article-figure {
+    margin: 24px 0;
   }
 </style>
