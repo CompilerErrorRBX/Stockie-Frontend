@@ -8,6 +8,7 @@ const Store = new Vuex.Store({
   state: {
     article: null,
     articles: [],
+    similar_articles: [],
     dark_theme: false,
     page_name: 'Home',
     theme: {
@@ -33,20 +34,36 @@ const Store = new Vuex.Store({
     setArticles(state, articles) {
       state.articles = articles;
     },
+    setSimilarArticles(state, articles) {
+      state.similar_articles = articles;
+    },
   },
   actions: {
     fetchArticle: (state, articleId) => {
-      axios.get(`http://localhost:3000/article/${articleId}`)
+      const request = axios.get(`http://localhost:3000/article/${articleId}`)
         .then((response) => {
           state.commit('setArticle', response.data);
         });
+      return request;
     },
     fetchArticles: (state, props) => {
-      const request = axios.get(`http://localhost:3000/articles?limit=${props.limit}&offset=${props.offset}`)
+      const limit = props.limit ? props.limit : 10;
+      const offset = props.offset ? props.offset : 0;
+      const request = axios.get(`http://localhost:3000/articles?limit=${limit}&offset=${offset}`)
         .then((response) => {
           const articles = props.appendArticles ?
             state.state.articles.concat(response.data) : response.data;
           state.commit('setArticles', articles);
+        });
+
+      return request;
+    },
+    fetchSimilarArticles: (state, props) => {
+      const limit = props.limit ? props.limit : 10;
+      const offset = props.offset ? props.offset : 0;
+      const request = axios.get(`http://localhost:3000/article/${props.article_id}/similar?limit=${limit}&offset=${offset}`)
+        .then((response) => {
+          state.commit('setSimilarArticles', response.data);
         });
 
       return request;

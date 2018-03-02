@@ -35,7 +35,7 @@ export default {
   mounted() {
     this.$store.dispatch('fetchArticles', { limit: this.limit, offset: this.offset })
       .then(() => {
-        this.resizeAllGridItems(); 
+        this.resizeAllGridItems();
       });
     this.offset += this.limit;
 
@@ -60,16 +60,17 @@ export default {
       }
     },
     resizeGridItem(item) {
+      const article = item;
       const grid = document.getElementsByClassName('grid')[0];
       const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'), 10);
       const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'), 10);
-      const rowSpan = Math.ceil((item.querySelector('.card').getBoundingClientRect().height + rowGap) / (rowHeight + rowGap));
+      const rowSpan = Math.ceil((article.querySelector('.card').getBoundingClientRect().height + rowGap) / (rowHeight + rowGap));
 
-      item.style.gridRowEnd = `span ${rowSpan}`;
+      article.style.gridRowEnd = `span ${rowSpan}`;
     },
     resizeAllGridItems() {
       const allItems = document.getElementsByClassName('article-card');
-      for (let x = 0; x < allItems.length; x++) {
+      for (let x = 0; x < allItems.length; x += 1) {
         this.resizeGridItem(allItems[x]);
       }
     },

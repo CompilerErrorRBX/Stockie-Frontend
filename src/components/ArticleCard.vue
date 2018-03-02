@@ -1,25 +1,29 @@
 <template>
-  <v-card hover transition="slide-y-transition">
+  <v-card hover :key="article.id" :to="`/Article/${article.id}`">
+    <v-card-title>
+      <v-avatar size="32" class="primary mr-2" v-if="article.author_image">
+        <img :src="article.author_image">
+      </v-avatar>
+      <div class="body-2">{{ article.author }}</div>
+      <div v-if="article.section">
+        <v-icon small class="mx-1">chevron_right</v-icon>
+        <span class="caption">{{ article.section }}</span>
+      </div>
+      <v-spacer></v-spacer>
+      <v-btn icon small>
+        <v-icon small>more_vert</v-icon>
+      </v-btn>
+    </v-card-title>
     <v-card-media :src="article.thumbnail" height="200px" v-if="article.thumbnail" />
-    <v-card-title primary-title>
+    <v-card-title :primary-title="!article.thumbnail === null">
       <div>
         <div class="headline">{{ article.title }}</div>
-        <div >{{ article.author }}</div>
         <div class="grey--text">{{ article.date_published | moment }}</div>
       </div>
     </v-card-title>
     <v-card-text>
       {{ article.description }}
     </v-card-text>
-    <v-card-actions>
-      <v-btn flat>Share</v-btn>
-      <v-btn
-        :to="`/Article/${article.id}`"
-        flat
-      >
-        Explore
-      </v-btn>
-    </v-card-actions>
   </v-card>
 </template>
 

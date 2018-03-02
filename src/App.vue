@@ -1,10 +1,11 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer
       app
       :clipped="$vuetify.breakpoint.mdAndUp"
       fixed
       v-model="drawer"
+      class="elevation-1"
     >
       <v-list>
         <v-list-tile
