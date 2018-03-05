@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer
       app
       :clipped="$vuetify.breakpoint.mdAndUp"
@@ -24,8 +24,15 @@
         <v-divider />
         <v-subheader>Data Extraction</v-subheader>
         <v-list-tile :disabled="updatingArticles" @click="extractArticles">
-          <v-list-tile-action>
+          <v-list-tile-action v-if="!updatingArticles">
             <v-icon>refresh</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-action v-if="updatingArticles">
+            <v-progress-circular
+              :size="25"
+              indeterminate
+              :color="theme.primary_color"
+            />
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Update Articles</v-list-tile-title>
@@ -58,17 +65,13 @@
         <v-toolbar-side-icon @click.stop="drawer = !drawer" />
         <span class="hidden-sm-and-down">{{ page_name }}</span>
       </v-toolbar-title>
-      <v-text-field
-        flat
-        solo-inverted
-        prepend-icon="search"
-        label="Search"
-        class="hidden-sm-and-down"
-      ></v-text-field>
-      <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>person</v-icon>
-      </v-btn>
+      <Searchbar />
+      <div class="v-navbar-spacer">
+        <v-spacer />
+        <v-btn icon>
+          <v-icon>person</v-icon>
+        </v-btn>
+      </div>
     </v-toolbar>
     <v-content>
       <v-container fluid style="height: unset; min-height: 100vh">
@@ -83,6 +86,7 @@
 <script>
 import { mapState } from 'vuex';
 import axios from 'axios';
+import Searchbar from './components/Searchbar';
 
 export default {
   name: 'App',
@@ -90,6 +94,7 @@ export default {
     'theme',
     'page_name',
   ]),
+  components: { Searchbar },
   data: () => ({
     updatingArticles: false,
     drawer: null,
@@ -137,6 +142,12 @@ export default {
     .list__tile--active .list__tile__action .icon {
       color: inherit;
     }
+  }
+
+  .v-navbar-spacer {
+    display: flex;
+    flex: 1 0 auto;
+    max-width: 300px;
   }
 
   .fade-enter-active, .fade-leave-active {

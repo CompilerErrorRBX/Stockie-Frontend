@@ -9,6 +9,7 @@ const Store = new Vuex.Store({
     article: null,
     articles: [],
     similar_articles: [],
+    search_results: [],
     dark_theme: false,
     page_name: 'Home',
     theme: {
@@ -37,6 +38,9 @@ const Store = new Vuex.Store({
     setSimilarArticles(state, articles) {
       state.similar_articles = articles;
     },
+    setSearchResults(state, articles) {
+      state.search_results = articles;
+    },
   },
   actions: {
     fetchArticle: (state, articleId) => {
@@ -64,6 +68,16 @@ const Store = new Vuex.Store({
       const request = axios.get(`http://localhost:3000/article/${props.article_id}/similar?limit=${limit}&offset=${offset}`)
         .then((response) => {
           state.commit('setSimilarArticles', response.data);
+        });
+
+      return request;
+    },
+    fetchArticlesBySearch: (state, props) => {
+      const limit = props.limit ? props.limit : 10;
+      const offset = props.offset ? props.offset : 0;
+      const request = axios.get(`http://localhost:3000/articles/search?query=${props.query}&limit=${limit}&offset=${offset}`)
+        .then((response) => {
+          state.commit('setSearchResults', response.data);
         });
 
       return request;
