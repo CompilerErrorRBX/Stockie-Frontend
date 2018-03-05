@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app dark>
     <v-navigation-drawer
       app
       :clipped="$vuetify.breakpoint.mdAndUp"
@@ -19,6 +19,16 @@
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>{{ page.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider />
+        <v-subheader>Data Extraction</v-subheader>
+        <v-list-tile :disabled="updatingArticles" @click="extractArticles">
+          <v-list-tile-action>
+            <v-icon>refresh</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Update Articles</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-divider />
@@ -72,6 +82,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import axios from 'axios';
 
 export default {
   name: 'App',
@@ -80,6 +91,7 @@ export default {
     'page_name',
   ]),
   data: () => ({
+    updatingArticles: false,
     drawer: null,
     pages: [
       { icon: 'home', title: 'Home', route: '/' },
@@ -92,6 +104,16 @@ export default {
     ],
   }),
   props: {
+  },
+  methods: {
+    extractArticles() {
+      this.updatingArticles = true;
+      axios.get('http://localhost:3000/articles/extract')
+        .then(() => {
+          this.$store.dispatch('fetchArticles', { limit: this.limit, offset: this.offset });
+          this.updatingArticles = false;
+        });
+    },
   },
 };
 </script>

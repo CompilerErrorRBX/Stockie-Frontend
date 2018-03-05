@@ -6,7 +6,7 @@
       </v-avatar>
       <div class="body-2">{{ article.author }}</div>
       <div v-if="article.section">
-        <v-icon small class="mx-1">chevron_right</v-icon>
+        <v-icon small class="ml-1">chevron_right</v-icon>
         <span class="caption">{{ article.section }}</span>
       </div>
       <v-spacer></v-spacer>
@@ -17,11 +17,11 @@
     <v-card-media :src="article.thumbnail" height="200px" v-if="article.thumbnail" />
     <v-card-title :primary-title="!article.thumbnail === null">
       <div>
-        <div class="headline">{{ article.title }}</div>
+        <div class="title">{{ article.title }}</div>
         <div class="grey--text">{{ article.date_published | moment }}</div>
       </div>
     </v-card-title>
-    <v-card-text>
+    <v-card-text class="pt-0">
       {{ article.description }}
     </v-card-text>
   </v-card>

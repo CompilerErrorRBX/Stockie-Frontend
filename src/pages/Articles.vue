@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapState } from 'vuex';
 import ArticleCard from '../components/ArticleCard';
 
@@ -41,7 +42,7 @@ export default {
 
     window.addEventListener('resize', () => { this.resizeAllGridItems(); });
 
-    this.resizeAllGridItems();
+    // this.resizeAllGridItems();
   },
   methods: {
     onScroll() {
@@ -55,7 +56,7 @@ export default {
             this.$store.commit('setTheme', { primary_color: 'teal' });
             this.loading = false;
             this.offset += this.limit;
-            this.resizeAllGridItems();
+            // this.resizeAllGridItems();
           });
       }
     },
@@ -75,14 +76,16 @@ export default {
       }
     },
   },
-  // watch: {
-  //   articles: {
-  //     handler() {
-  //       this.resizeAllGridItems();
-  //     },
-  //     deep: true,
-  //   },
-  // },
+  watch: {
+    articles: {
+      handler() {
+        Vue.nextTick(() => {
+          this.resizeAllGridItems();
+        });
+      },
+      deep: true,
+    },
+  },
   computed: mapState([
     'articles',
   ]),

@@ -20,8 +20,8 @@
         </v-card-title>
         <v-card-media :src="article.thumbnail" contain v-if="article.thumbnail">
         </v-card-media>
-        <v-card-title>
-          <div class="headline">{{ article.title }}</div>
+        <v-card-title class="d-block">
+          <div class="headline d-block">{{ article.title }}</div>
           <div class="subheading grey--text">{{ article.description }}</div>
         </v-card-title>
         <v-card-text>
@@ -86,7 +86,9 @@ export default {
   },
   methods: {
     loadArticle(articleId) {
-      this.$store.dispatch('fetchArticle', articleId);
+      this.$store.dispatch('fetchArticle', articleId).then(() => {
+        this.$store.commit('setPageName', this.article.section);
+      });
       this.$store.dispatch('fetchSimilarArticles', { article_id: articleId, limit: 4, offset: 0 });
       this.$vuetify.goTo(0);
     },
