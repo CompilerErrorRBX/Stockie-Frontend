@@ -7,19 +7,20 @@
       solo-inverted
       prepend-icon="search"
       label="Search"
+      @keydown.enter.native="$router.push({ path: `/Articles/Search/${value}` });"
       v-model="value"
     />
-    <v-list v-show="search_results.length" light class="v-searchbar-results elevation-6" dense>
+    <v-list v-show="results.length" light class="v-searchbar-results elevation-6" dense>
       <v-progress-linear
         v-show="loading"
         class="v-searchbar-progress"
         :indeterminate="true"
         height="4"
         color="warning" />
-      <template v-for="result in search_results">
+      <template v-for="result in results">
         <v-list-tile
           :key="result.id"
-          @mousedown.prevent="$router.push({ path: `/Article/${result.id}` });"
+          @mousedown="$router.push({ path: `/Article/${result.id}` });"
           @click.prevent
         >
           <v-list-tile-content>
@@ -32,17 +33,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import axios from 'axios';
 
 export default {
   name: 'Searchbar',
   data: () => ({
     loading: false,
     value: this.query,
+    results: [],
   }),
-  computed: mapState([
-    'search_results',
-  ]),
   props: {
     query: {
       type: String,
@@ -51,7 +50,10 @@ export default {
   },
   methods: {
     getSearchResults() {
-      this.$store.dispatch('fetchArticlesBySearch', { query: this.value, limit: 5, offset: 0 });
+      axios.get(`http://localhost:3000/articles/search?query=${this.value}&limit=5&offset=0`)
+        .then((response) => {
+          this.results = response.data;
+        });
     },
   },
   watch: {

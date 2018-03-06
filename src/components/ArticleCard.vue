@@ -15,13 +15,16 @@
       </v-btn>
     </v-card-title>
     <v-card-media :src="article.thumbnail" height="200px" v-if="article.thumbnail" />
-    <v-card-title :primary-title="!article.thumbnail === null">
+    <v-card-title
+      :class="{ 'pt-0': !article.thumbnail }"
+      :primary-title="article.thumbnail"
+    >
       <div>
         <div class="title">{{ article.title }}</div>
         <div class="grey--text">{{ article.date_published | moment }}</div>
       </div>
     </v-card-title>
-    <v-card-text class="pt-0">
+    <v-card-text v-if="article.description" class="pt-0">
       {{ article.description }}
     </v-card-text>
   </v-card>

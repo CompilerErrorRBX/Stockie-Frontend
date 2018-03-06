@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Home from '@/pages/Home';
 import Dashboard from '@/pages/Articles';
 import Article from '@/pages/Article';
+import Search from '@/pages/Search';
 
 import store from '../store';
 
@@ -39,6 +40,17 @@ export default new Router({
       beforeEnter: (to, origin, next) => {
         store.commit('setTheme', { primary_color: 'red' });
         store.commit('setPageName', 'Article');
+        next();
+      },
+    },
+    {
+      path: '/Articles/Search/:query',
+      name: 'Search',
+      component: Search,
+      props: true,
+      beforeEnter: (to, origin, next) => {
+        store.commit('setTheme', { primary_color: 'blue-grey' });
+        store.commit('setPageName', 'Search');
         next();
       },
     },

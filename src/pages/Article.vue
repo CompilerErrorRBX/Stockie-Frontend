@@ -40,7 +40,6 @@
             class="mx-1"
             hover
             :to="`/Article/${similarArticle.id}`"
-            @click.native="loadArticle(similarArticle.id)"
           >
             <v-card-title>
               <v-avatar size="32" class="primary mr-2" v-if="similarArticle.author_image">
@@ -81,9 +80,6 @@ export default {
   filters: {
     moment: date => (moment(date).format('MMM D, h:mm a')),
   },
-  mounted() {
-    this.loadArticle(this.article_id);
-  },
   methods: {
     loadArticle(articleId) {
       this.$store.dispatch('fetchArticle', articleId).then(() => {
@@ -93,8 +89,16 @@ export default {
       this.$vuetify.goTo(0);
     },
   },
+  mounted() {
+    this.loadArticle(this.article_id);
+  },
   props: {
     article_id: String,
+  },
+  watch: {
+    article_id(newVal) {
+      this.loadArticle(newVal);
+    },
   },
 };
 </script>
