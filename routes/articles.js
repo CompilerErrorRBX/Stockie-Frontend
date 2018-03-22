@@ -74,7 +74,7 @@ const articleAPI = (app) => {
   });
 
   app.get('/articles/extract', (req, res, next) => {
-    axios.get(`${articleAPIURL}/article/extract`)
+    axios.get(`${articleAPIURL}/articles/extract`)
       .then((response) => {
         res.status(200);
         res.json(response.data);
