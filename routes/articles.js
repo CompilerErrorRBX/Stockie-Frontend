@@ -14,12 +14,14 @@ const articleAPI = (app) => {
 
     axios.get(`${articleAPIURL}/articles?limit=${limit}&offset=${offset}`)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         res.status(200);
         res.json(response.data);
+        next();
       })
       .catch((error) => {
-        res.status(500).send(error.response.statusText);
+        console.log(error);
+        // res.status(500).send(error.response.statusText);
       });
   });
 
@@ -27,7 +29,7 @@ const articleAPI = (app) => {
   app.get('/article/:id', (req, res, next) => {
     axios.get(`${articleAPIURL}/article/${req.params.id}`)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         res.status(200);
         res.json(response.data);
       })
@@ -35,6 +37,8 @@ const articleAPI = (app) => {
         console.log(error.response);
         res.status(500).send(error.response.statusText);
       });
+
+    next();
   });
 }
 

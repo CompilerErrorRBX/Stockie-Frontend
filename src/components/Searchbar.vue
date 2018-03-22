@@ -7,7 +7,7 @@
       solo-inverted
       prepend-icon="search"
       label="Search"
-      @keydown.enter.native="$router.push({ path: `/Articles/Search/${value}` });"
+      @keydown.enter.native="$router.push({ path: `/Search/${value}` });"
       v-model="value"
     />
     <v-list v-show="results.length" light class="v-searchbar-results elevation-6" dense>

@@ -1,11 +1,11 @@
 <template>
   <div class="v-carousel">
-    <div class="v-carousel--left" v-show="scroll > 0">
+    <div class="v-carousel--left" :class="{ active: scroll > 5 }">
       <v-btn fab small @click="scrollRight">
         <v-icon>chevron_left</v-icon>
       </v-btn>
     </div>
-    <div class="v-carousel--right" v-show="scroll+width < maxScroll">
+    <div class="v-carousel--right" :class="{ active: scroll+width < maxScroll-5 }">
       <v-btn fab small @click="scrollLeft">
         <v-icon>chevron_right</v-icon>
       </v-btn>
@@ -25,9 +25,7 @@ export default {
     width: 0,
   }),
   mounted() {
-    this.maxScroll = this.$refs.items.scrollWidth;
-    this.scroll = this.$refs.items.scrollLeft;
-    this.width = this.$refs.items.clientWidth;
+    this.onScroll();
   },
   methods: {
     scrollLeft() {
@@ -42,10 +40,10 @@ export default {
         behavior: 'smooth',
       });
     },
-    onScroll(e) {
+    onScroll() {
       this.maxScroll = this.$refs.items.scrollWidth;
       this.width = this.$refs.items.clientWidth;
-      this.scroll = e.target.scrollLeft;
+      this.scroll = this.$refs.items.scrollLeft;
     },
   },
 };
@@ -66,6 +64,14 @@ export default {
         top: 0;
         bottom: 0;
         z-index: 2;
+        opacity: 0;
+        transition: opacity 0.2s;
+        pointer-events: none;
+
+        &.active {
+          pointer-events: unset;
+          opacity: 1;
+        }
       }
 
       .v-carousel--left {
@@ -82,10 +88,11 @@ export default {
         white-space: nowrap;
         -webkit-overflow-scrolling: touch;
         -ms-overflow-style: none;  // IE 10+
-        overflow: auto;
+        overflow-x: auto;
+        padding: 4px 0;
 
         &::-webkit-scrollbar {
-        display: none;
+          display: none;
         }
       }
     }

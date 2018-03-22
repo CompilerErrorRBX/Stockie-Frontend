@@ -1,73 +1,84 @@
 <template>
-  <v-layout row pb-2 v-if="article">
-    <v-flex xs12 md10 offset-md1>
-      <v-card>
-        <v-card-title>
-          <v-avatar size="38" class="primary mr-2">
-            <img :src="article.author_image" v-if="article.author_image">
-            <span class="white--text headline" v-if="!article.author_image">
-              {{ article.author[0] }}
-            </span>
-          </v-avatar>
-          <div class="title">{{ article.author }}</div>
-          <v-icon small class="mx-1">chevron_right</v-icon>
-          <div class="subheading">{{ article.section }}</div>
-          <v-spacer></v-spacer>
-          <div class="grey--text">{{ article.date_published | moment }}</div>
-          <v-btn icon>
-            <v-icon>more_vert</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-card-media :src="article.thumbnail" contain v-if="article.thumbnail">
-        </v-card-media>
-        <v-card-title class="d-block">
-          <div class="headline d-block">{{ article.title }}</div>
-          <div class="subheading grey--text">{{ article.description }}</div>
-        </v-card-title>
-        <v-card-text>
-          <div v-html="article.body" />
-        </v-card-text>
-      </v-card>
-      <v-subheader>Similar Articles</v-subheader>
-      <v-layout row>
-        <v-flex
-          class="article-card"
-
-          v-for="similarArticle in similar_articles"
-          :key="similarArticle.id"
-        >
-          <v-card
-            class="mx-1"
-            hover
-            :to="`/Article/${similarArticle.id}`"
-          >
-            <v-card-title>
-              <v-avatar size="32" class="primary mr-2" v-if="similarArticle.author_image">
-                <img :src="similarArticle.author_image">
-              </v-avatar>
-              <div class="body-2">{{ similarArticle.author }}</div>
-            </v-card-title>
-            <v-card-text class="pt-0">
-              <div>
-                <div class="subheading line-clamp">{{ similarArticle.title }}</div>
-                <div class="grey--text">{{ similarArticle.date_published | moment }}</div>
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-flex>
-  </v-layout>
+  <div>
+    <v-layout row pb-2 v-if="article">
+      <v-flex xs12 md10 offset-md1>
+        <v-card>
+          <v-card-title>
+            <v-avatar size="38" class="primary mr-2">
+              <img :src="article.author_image" v-if="article.author_image">
+              <span class="white--text headline" v-if="!article.author_image">
+                {{ article.author[0] }}
+              </span>
+            </v-avatar>
+            <div class="title">{{ article.author }}</div>
+            <v-icon small class="mx-1">chevron_right</v-icon>
+            <div class="subheading">{{ article.section }}</div>
+            <v-spacer></v-spacer>
+            <div class="grey--text">{{ article.date_published | moment }}</div>
+            <v-btn icon>
+              <v-icon>more_vert</v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-card-media :src="article.thumbnail" contain v-if="article.thumbnail">
+          </v-card-media>
+          <v-card-title class="d-block">
+            <div class="headline d-block">{{ article.title }}</div>
+            <div class="subheading grey--text">{{ article.description }}</div>
+          </v-card-title>
+          <v-card-text>
+            <div v-html="article.body" />
+          </v-card-text>
+        </v-card>
+        <v-subheader>Similar Articles</v-subheader>
+        <Carousel>
+          <v-layout row>
+            <v-flex
+              class="article-card"
+              xs3
+              v-for="similarArticle in similar_articles"
+              :key="similarArticle.id"
+            >
+              <v-card
+                class="mx-1"
+                hover
+                :to="`/Article/${similarArticle.id}`"
+              >
+                <v-card-title>
+                  <v-avatar size="20" class="primary mr-2" v-if="similarArticle.author_image">
+                    <img :src="similarArticle.author_image">
+                  </v-avatar>
+                  <div class="body-2">{{ similarArticle.author }}</div>
+                </v-card-title>
+                <v-card-text class="pt-0">
+                  <div>
+                    <div class="subheading line-clamp">{{ similarArticle.title }}</div>
+                    <div class="grey--text">{{ similarArticle.date_published | moment }}</div>
+                  </div>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </Carousel>
+        <div v-if="article.Tags.length">
+          <v-subheader>Mentioned</v-subheader>
+          <Carousel>
+            <v-chip v-for="tag in article.Tags" :key="tag.id">{{ tag.tag }}</v-chip>
+          </Carousel>
+        </div>
+      </v-flex>
+    </v-layout>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import moment from 'moment';
 import ArticleCard from '../components/ArticleCard';
+import Carousel from '../components/Carousel';
 
 export default {
   name: 'Article',
-  components: { ArticleCard },
+  components: { ArticleCard, Carousel },
   computed: mapState([
     'article',
     'similar_articles',
@@ -85,7 +96,7 @@ export default {
       this.$store.dispatch('fetchArticle', articleId).then(() => {
         this.$store.commit('setPageName', this.article.section);
       });
-      this.$store.dispatch('fetchSimilarArticles', { article_id: articleId, limit: 4, offset: 0 });
+      this.$store.dispatch('fetchSimilarArticles', { article_id: articleId, limit: 10, offset: 0 });
       this.$vuetify.goTo(0);
     },
   },
@@ -142,5 +153,6 @@ export default {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    white-space: unset;
   }
 </style>

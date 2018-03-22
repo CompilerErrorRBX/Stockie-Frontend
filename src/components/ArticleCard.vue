@@ -17,7 +17,7 @@
     <v-card-media :src="article.thumbnail" height="200px" v-if="article.thumbnail" />
     <v-card-title
       :class="{ 'pt-0': !article.thumbnail }"
-      :primary-title="article.thumbnail"
+      :primary-title="!article.thumbnail === null"
     >
       <div>
         <div class="title">{{ article.title }}</div>

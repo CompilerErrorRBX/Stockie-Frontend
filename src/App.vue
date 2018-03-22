@@ -99,8 +99,7 @@ export default {
     updatingArticles: false,
     drawer: null,
     pages: [
-      { icon: 'home', title: 'Home', route: '/' },
-      { icon: 'dashboard', title: 'Articles', route: '/Articles' },
+      { icon: 'dashboard', title: 'Articles', route: '/' },
     ],
     options: [
       { icon: 'settings', title: 'Settings', route: '/Settings' },

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from '@/pages/Home';
 import Dashboard from '@/pages/Articles';
 import Article from '@/pages/Article';
 import Search from '@/pages/Search';
@@ -13,20 +12,10 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home,
-      beforeEnter: (to, origin, next) => {
-        store.commit('setTheme', { primary_color: 'blue' });
-        store.commit('setPageName', 'Home');
-        next();
-      },
-    },
-    {
-      path: '/Articles',
       name: 'Articles',
       component: Dashboard,
       beforeEnter: (to, origin, next) => {
-        store.commit('setTheme', { primary_color: 'teal' });
+        store.commit('setTheme', { primary_color: 'blue' });
         store.commit('setPageName', 'Articles');
         store.commit('setArticles', []);
         next();
@@ -44,7 +33,7 @@ export default new Router({
       },
     },
     {
-      path: '/Articles/Search/:query',
+      path: '/Search/:query',
       name: 'Search',
       component: Search,
       props: true,

@@ -1,32 +1,22 @@
 <template>
   <div>
-    <v-subheader>About {{ search_results.length }} results</v-subheader>
-    <Carousel>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-      <v-chip>Test</v-chip>
-    </Carousel>
+    <v-subheader>
+      About {{ search_results.length }} Results
+      <v-spacer />
+      <v-menu offset-y>
+        <v-btn flat slot="activator">
+          <span>{{ filter }}</span>
+        </v-btn>
+        <v-list>
+          <v-list-tile v-for="filterName in filters" :key="filterName" @click="filter = filterName">
+            <v-list-tile-title>{{ filterName }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+      <v-btn icon>
+        <v-icon small>arrow_downward</v-icon>
+      </v-btn>
+    </v-subheader>
     <v-flex
       class="article-card"
       xs12
@@ -61,7 +51,8 @@ export default {
   ]),
   data() {
     return {
-
+      filter: 'Relevance',
+      filters: ['Relevance', 'Published'],
     };
   },
   filters: {
