@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     getSearchResults() {
-      axios.get(`http://localhost:3000/articles/search?query=${this.value}&limit=5&offset=0`)
+      axios.get(`/api/articles/search?query=${this.value}&limit=5&offset=0`)
         .then((response) => {
           this.results = response.data;
         });
