@@ -12,3 +12,5 @@ app.use(bodyParser.urlencoded({ extended: true }));
 routes(app);
 
 var server = app.listen(3001);
+
+console.log('Server running at port 3001');
