@@ -112,7 +112,7 @@ export default {
   methods: {
     extractArticles() {
       this.updatingArticles = true;
-      axios.get('http://localhost:3000/articles/extract')
+      axios.get('/api/articles/extract')
         .then(() => {
           this.$store.dispatch('fetchArticles', { limit: this.limit, offset: this.offset });
           this.updatingArticles = false;
