@@ -44,7 +44,7 @@ const Store = new Vuex.Store({
   },
   actions: {
     fetchArticle: (state, articleId) => {
-      const request = axios.get(`http://localhost:3000/article/${articleId}`)
+      const request = axios.get(`/article/${articleId}`)
         .then((response) => {
           state.commit('setArticle', response.data);
         });
@@ -53,7 +53,7 @@ const Store = new Vuex.Store({
     fetchArticles: (state, props) => {
       const limit = props.limit ? props.limit : 10;
       const offset = props.offset ? props.offset : 0;
-      const request = axios.get(`http://localhost:3000/articles?limit=${limit}&offset=${offset}`)
+      const request = axios.get(`/articles?limit=${limit}&offset=${offset}`)
         .then((response) => {
           const articles = props.appendArticles ?
             state.state.articles.concat(response.data) : response.data;
@@ -65,7 +65,7 @@ const Store = new Vuex.Store({
     fetchSimilarArticles: (state, props) => {
       const limit = props.limit ? props.limit : 10;
       const offset = props.offset ? props.offset : 0;
-      const request = axios.get(`http://localhost:3000/article/${props.article_id}/similar?limit=${limit}&offset=${offset}`)
+      const request = axios.get(`/article/${props.article_id}/similar?limit=${limit}&offset=${offset}`)
         .then((response) => {
           state.commit('setSimilarArticles', response.data);
         });
@@ -75,7 +75,7 @@ const Store = new Vuex.Store({
     fetchArticlesBySearch: (state, props) => {
       const limit = props.limit ? props.limit : 10;
       const offset = props.offset ? props.offset : 0;
-      const request = axios.get(`http://localhost:3000/articles/search?query=${props.query}&limit=${limit}&offset=${offset}`)
+      const request = axios.get(`/articles/search?query=${props.query}&limit=${limit}&offset=${offset}`)
         .then((response) => {
           state.commit('setSearchResults', response.data);
         });

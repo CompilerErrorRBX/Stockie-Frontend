@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const articleAPIURL = 'http://localhost:3000';
+const articleAPIURL = 'http://127.0.0.1:3000';
 
 const articleAPI = (app) => {
   app.get('/', (req, res, next) => {
